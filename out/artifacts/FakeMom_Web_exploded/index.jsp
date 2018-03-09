@@ -16,6 +16,10 @@
 <%
     String p_key = "";
     int rows = 0;
+    String query = "n/a";
+
+    String uname = request.getParameter("username");
+    String pwd = request.getParameter("password");
 
     try {
         // Connect to MySQL db fakemom
@@ -24,7 +28,8 @@
         Connection con = DriverManager.getConnection(url, "gwc2018", "gwc2018");
 
         // Create & execute query
-        String query = "select id from Users where username like '%katie%' and password like '%1234%'";
+        query = "select id from Users where username like '%" + uname +
+                "%' and password like '%" + pwd + "%'";
         java.sql.Statement stmt = con.createStatement();
         java.sql.ResultSet rs = stmt.executeQuery(query);
 
@@ -38,13 +43,17 @@
             System.out.println("p_key is " + p_key);
             response.sendRedirect("loggedin.html");
         } else {
-            System.out.println("No data.");
+            System.out.println("Not found");
         }
 
     } catch (Exception e) {
         System.out.println(e);
     }
 %>
+<p>username is <%=uname%></p>
+<p>password is <%=pwd%></p>
+<p>query is <%=query%></p>
+<p>pkey.length() is <%=p_key.length()%></p>
 <p>pkey is <%=p_key%></p>
 <p><%=rows%> rows</p>
 
